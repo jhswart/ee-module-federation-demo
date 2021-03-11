@@ -6,9 +6,7 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 const deps = require('./package.json').dependencies;
 
 module.exports = {
-  //our index file
   entry: path.resolve(__dirname, 'src/index.tsx'),
-  //Where we put the production code
   output: {
     publicPath: 'auto',
     chunkFilename: '[id].[contenthash].js',
@@ -16,7 +14,6 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  // This says to webpack that we are in development mode and write the code in webpack file in different way
   mode: 'development',
   module: {
     rules: [
@@ -51,40 +48,31 @@ module.exports = {
     ],
   },
   plugins: [
-    //Allows remove/clean the build folder
     new CleanWebpackPlugin(),
-    //Allows update react components in real time
     new HotModuleReplacementPlugin(),
-    //Allows to create an index.html in our build folder
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'public/index.html'), //we put the file that we created in public folder
+      template: path.resolve(__dirname, 'public/index.html'),
     }),
-    // new ModuleFederationPlugin({
-    //   name: 'app1',
-    //   remotes: {
-    //     app2: 'app2@http://localhost:8001/remoteEntry.js',
-    //     styling: 'styling@http://localhost:8002/remoteEntry.js',
-    //   },
-    //   shared: [
-    //     {
-    //       ...deps,
-    //       react: {
-    //         singleton: true,
-    //         requiredVersion: deps.react,
-    //       },
-    //       'react-dom': {
-    //         singleton: true,
-    //         requiredVersion: deps['react-dom'],
-    //       },
-    //       'styled-components': {
-    //         singleton: true,
-    //         requiredVersion: deps['styled-components'],
-    //       },
-    //     },
-    //   ],
-    // }),
+    new ModuleFederationPlugin({
+      name: 'app1',
+      remotes: {
+        styling: 'styling@http://localhost:8002/remoteEntry.js',
+        app2: 'app2@http://localhost:8001/remoteEntry.js',
+      },
+      shared: [
+        {
+          react: {
+            singleton: true,
+            requiredVersion: deps.react,
+          },
+          'react-dom': {
+            singleton: true,
+            requiredVersion: deps['react-dom'],
+          },
+        },
+      ],
+    }),
   ],
-  //Config for webpack-dev-server module
   devServer: {
     historyApiFallback: true,
     contentBase: path.resolve(__dirname, 'dist'),

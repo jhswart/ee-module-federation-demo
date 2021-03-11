@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import Input from 'styling/Input';
-import Button from 'styling/Button';
 import styled from 'styled-components';
+import Button from 'styling/Button';
+import Input from 'styling/Input';
 
 const addToList = (item, list) => [...list, item];
 const removeFromList = (list) => [...list.slice(0, -1)];
@@ -40,6 +40,7 @@ const List = () => {
         onClick={() => {
           if (!!input) {
             setList(addToList(input, list));
+            setInput('');
             inputEl.current.value = '';
           }
         }}>

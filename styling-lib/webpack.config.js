@@ -57,27 +57,23 @@ module.exports = {
       name: 'styling',
       filename: 'remoteEntry.js',
       exposes: {
+        './GlobalStyle': './src/GlobalStyle.jsx',
+        './Page': './src/Page/Page.jsx',
         './Button': './src/Button/Button.jsx',
         './Input': './src/Input/Input.jsx',
-        './GlobalStyle': './src/GlobalStyle.jsx',
-        './Header': './src/Header/Header.jsx',
-        './Footer': './src/Footer/Footer.jsx',
-        './Owl': './src/Icons/Owl.jsx',
-        './Page': './src/Page/Page.jsx',
       },
       shared: [
         {
-          ...deps,
           react: {
             singleton: true,
             requiredVersion: deps.react,
-            eager: true,
           },
           'react-dom': {
             singleton: true,
             requiredVersion: deps['react-dom'],
           },
         },
+        'styled-components',
       ],
     }),
   ],

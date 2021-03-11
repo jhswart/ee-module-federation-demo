@@ -51,33 +51,29 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public/index.html'), //we put the file that we created in public folder
     }),
-    // new ModuleFederationPlugin({
-    //   name: 'app2',
-    //   filename: 'remoteEntry.js',
-    //   remotes: {
-    //     styling: 'styling@http://localhost:8002/remoteEntry.js',
-    //   },
-    //   exposes: {
-    //     './List': './src/List/List.jsx',
-    //   },
-    //   shared: [
-    //     {
-    //       ...deps,
-    //       react: {
-    //         singleton: true,
-    //         requiredVersion: deps.react,
-    //         eager: true,
-    //       },
-    //       'react-dom': {
-    //         singleton: true,
-    //         requiredVersion: deps['react-dom'],
-    //       },
-    //       'styled-components': {
-    //         requiredVersion: deps['styled-components'],
-    //       },
-    //     },
-    //   ],
-    // }),
+    new ModuleFederationPlugin({
+      name: 'app2',
+      filename: 'remoteEntry.js',
+      remotes: {
+        styling: 'styling@http://localhost:8002/remoteEntry.js',
+      },
+      exposes: {
+        './List': './src/List/List.jsx',
+      },
+      shared: [
+        {
+          react: {
+            singleton: true,
+            requiredVersion: deps.react,
+          },
+          'react-dom': {
+            singleton: true,
+            requiredVersion: deps['react-dom'],
+          },
+        },
+        'styled-components',
+      ],
+    }),
   ],
   //Config for webpack-dev-server module
   devServer: {
